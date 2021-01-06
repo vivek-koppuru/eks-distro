@@ -93,7 +93,7 @@ docker-push:
 	docker push $(PAUSE_IMAGE)
 
 .PHONY: checksums
-checksums: tarballs local-images
+checksums: tarballs test local-images
 	build/create_release_checksums.sh $(RELEASE_BRANCH)
 
 .PHONY: build
@@ -101,6 +101,10 @@ build: checksums
 
 .PHONY: release
 release: checksums images
+
+.PHONY: test
+test: binaries
+	build/run_tests.sh $(RELEASE_BRANCH)
 
 .PHONY: all
 all: release
